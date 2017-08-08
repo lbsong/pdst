@@ -1,0 +1,21 @@
+{
+  "schedule": [
+    {
+      "date": 1,
+      "teams": [
+        {
+          "team": "NOV",
+          "pool": "JCC",
+          "start": "19:00",
+          "end": "20:20"
+        },
+        {
+          "team": "DEV",
+          "pool": "BAC",
+          "start": "18:00",
+          "end": "19:00"
+        }
+      ]
+    }
+  ]
+}

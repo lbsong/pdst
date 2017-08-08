@@ -1,0 +1,30 @@
+[
+  {
+    "group": "NOV",
+    "schedule": [
+      {
+        "date": "1",
+        "pool": "JCC",
+        "start": "19:00",
+        "end": "20:20"
+      },
+      {
+        "date": "3",
+        "pool": "MW",
+        "start": "18:00",
+        "end": "19:20"
+      }      
+    ]
+  },
+  {
+    "group": "DEV",
+    "schedule": [
+      {
+        "date": "1",
+        "pool": "JCC",
+        "start": "19:00",
+        "end": "20:20"
+      }
+    ]
+  }
+]

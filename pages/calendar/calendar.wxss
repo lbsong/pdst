@@ -1,0 +1,127 @@
+.calendar-root {
+  /*font-family: simhei;*/
+  font-size: 30rpx;
+  background: #eee;
+  height: 100%;
+}
+
+.splitter {
+  border: 0;
+  border-top: 1rpx solid #fff;
+  height: 0;
+}
+
+.calendar-navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*background: #eee;*/
+  height: 85rpx;
+}
+
+.calendar-navbar-button {
+  flex-grow: 1;
+  width: 100rpx;
+  /*height: 60rpx;*/
+  text-align: center;
+}
+
+.calendar-navbar-date {
+  flex-grow: 1;
+  width: 150rpx;
+  /*height: 50rpx;*/
+  text-align: center;
+}
+
+.calendar-head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80rpx;
+  /*background: #eee;*/
+}
+
+.calendar-head view {
+  text-align: center;
+  flex: 1;
+}
+
+.calendar-body {
+  /*background: #eee;*/
+  padding-top: 30rpx;
+  height: 500rpx;
+}
+
+.calendar-body-rows {
+  display: flex;
+  align-items: center;
+  padding: 0 4rpx 8rpx;
+}
+
+.calendar-body-cols {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: 0 4rpx;
+}
+
+.calendar-body-item {
+  display: flex;
+  /*background: #eee;*/
+  width: 95rpx;
+  height: 95rpx;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-body-day {
+  text-align: center;
+}
+
+.today {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width:75rpx;
+  height: 75rpx;
+  position: relative;
+  left: 0;
+  top: 0;
+  color: #fff;
+  background-color: #17b7b2;
+}
+
+.calendar-body-dayex {
+  text-align: center;
+  font-size: 25rpx;
+}
+
+.calendar-detail {
+  background: #eee;
+  height: 100rpx;
+}
+
+.calendar-detail-day {
+  display: inline;
+  position: absolute;
+  margin-left: 80rpx;
+  font-size: 20rpx;
+  /*font-weight: bold;*/
+  color: red;
+}
+
+.calendar-detail-info1 {
+  margin-left: 210rpx;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  font-size: 20rpx;
+  font-weight: bold;
+}
+
+.calendar-detail-info2 {
+  margin-left: 210rpx;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  font-size: 20rpx;
+}
