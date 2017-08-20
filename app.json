@@ -1,14 +1,14 @@
 {
-  "pages":[
+  "pages": [
     "pages/calendar/calendar",
     "pages/index/index",
-    "pages/logs/logs"
-    
+    "pages/logs/logs",
+    "pages/settings/settings"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "PDST Swimming Schedule",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   }
 }

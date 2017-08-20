@@ -1,0 +1,51 @@
+[
+  {
+    "name": "MW",
+    "fullname": "Mary Wayte Pool",
+    "address": "8815 SE 40TH ST. Mercer Island, WA",
+    "zipcode": "98040",
+    "phone": "206-588-1117"
+  },
+  {
+    "name": "JCC",
+    "fullname": "Jewish Community Center Pool at Mercer Island",
+    "address": "3801 E. Mercer Way, Mercer Island, WA",
+    "zipcode": "98040",
+    "phone": "206-232-7120"
+  },
+  {
+    "name": "MSC",
+    "fullname": "Mercerwood Shore Club Pool",
+    "address": "3801 E. Mercer Way, Mercer Island, WA",
+    "zipcode": "98040",
+    "phone": "206-232-1622"
+  },
+  {
+    "name": "BAC",
+    "fullname": "Bellevue Aquatic Center",
+    "address": "601 143rd Ave. NE. Bellevue, WA",
+    "zipcode": "98007",
+    "phone": "425-452-4444"
+  },
+  {
+    "name": "Hazen",
+    "fullname": "Hazen Pool @ Hazen High School",
+    "address": "1101 Hoquiam Ave NE, Renton, WA",
+    "zipcode": "98059",
+    "phone": "425-204-4230"
+  },
+  {
+    "name": "SKCP",
+    "fullname": "South Kitsap Community (Port Orchard) Pool",
+    "address": "425 Mitchell Avenue, Port Orchard, WA",
+    "zipcode": "98366",
+    "phone": "360-874-5741"
+  },
+  {
+    "name": "KCAC",
+    "fullname": "Weyerhauser King Co. Aquatic Center",
+    "address": "650 Southwest Campus Drive, Federal Way, WA",
+    "zipcode": "98023",
+    "phone": "206-296-4444"
+  }  
+]

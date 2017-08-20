@@ -1,41 +1,37 @@
 <view class="calendar-root">
-    <view class="calendar-navbar">
-        <view class="calendar-navbar-button" bindtap="goToday">Today</view>
-        <view class="calendar-navbar-button" bindtap="goLastMonth">{{"<"}}</view>
-        <view class="calendar-navbar-date">{{month}}</view>
-        <view class="calendar-navbar-button" bindtap="goNextMonth">{{">"}}</view>
-        <view class="calendar-navbar-button" bindtap="add">{{"+"}}</view>
-    </view>
-    <view class="splitter"></view>
-    <view class="calendar-head">
-        <view wx:for="{{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}}" wx:key="*this">{{item}}</view>
-    </view>
-    <view class="calendar-body">
-        <view class="calendar-body-rows" wx:for="123456" wx:for-index="row" wx:key="*this">
-            <view class="calendar-body-cols" wx:for="1234567" wx:for-index="col" wx:key="*this">
-                <view class="calendar-body-item" wx:if="{{arrIsShow[row * 7 + col]}}" data-day-index="{{row * 7 + col}}" bindtap="selectDay">
-                    <view class="calendar-body-day" wx:if="{{arrDays[row * 7 + col] != curDayOfMonth}}">
-                        {{arrDays[row * 7 + col]}}                       
-                    </view>
-                    <view class="calendar-body-day today" wx:else>
-                        {{arrDays[row * 7 + col]}}
-                    </view>
-                </view>
-            </view>
+  <view class="calendar-navbar">
+    <view class="calendar-navbar-button" bindtap="goToday">Today</view>
+    <view class="calendar-navbar-button" bindtap="goLastMonth">{{"<"}}</view>
+        <view class="calendar-navbar-date ">{{month}}</view>
+        <view class="calendar-navbar-button " bindtap="goNextMonth ">{{">"}}</view>
+    <view class="calendar-navbar-button" bindtap="add">{{"+"}}</view>
+  </view>
+  <view class="splitter"></view>
+  <view class="calendar-head">
+    <view wx:for="{{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']}}" wx:key="*this">{{item}}</view>
+  </view>
+  <view class="calendar-body">
+    <view class="calendar-body-rows" wx:for="123456" wx:for-index="row" wx:key="*this">
+      <view class="calendar-body-cols" wx:for="1234567" wx:for-index="col" wx:key="*this">
+        <view class="calendar-body-item" wx:if="{{arrIsShow[row * 7 + col]}}" data-day-index="{{row * 7 + col}}" bindtap="selectDay">
+          <view class="calendar-body-day" wx:if="{{arrDays[row * 7 + col] != curDayOfMonth}}">
+            {{arrDays[row * 7 + col]}}
+          </view>
+          <view class="calendar-body-day today" wx:else>
+            {{arrDays[row * 7 + col]}}
+          </view>
         </view>
+      </view>
     </view>
-    <view class="splitter"></view>
-    
-    <view class="calendar-detail">
-      
+  </view>
+  <view class="calender-detail">
+    <view class="detail-item" wx:for="{{schedules}}">
+      <text>{{item.group}}</text>
     </view>
+  </view>
 
-    <view class="teamPicker">
-      <view  class="picker_title">Select a team</view>
-      <picker bindchange="pickerChange" value="{{index}}" range="{{teams}}">
-        <view class="picker">
-          {{teams[index]}}
-        </view>
-      </picker>
-    </view>
+  <view class="calender-my" wx:if="{{mygroups.length > 0}}"></view>
+  <view class="calender-my" wx:else>
+    <navigator url="/pages/settings/settings">Select Groups</navigator>
+  </view>
 </view>

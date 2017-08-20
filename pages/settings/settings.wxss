@@ -1,0 +1,14 @@
+.settings {
+    margin: 60rpx;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    margin-left: -10rpx;
+    margin-top: 30rpx;
+}
+
+.checkbox-group .item {
+    margin: 15rpx;
+}

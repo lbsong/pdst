@@ -2,6 +2,7 @@
   /*font-family: simhei;*/
   font-size: 30rpx;
   background: #eee;
+  display: block;
   height: 100%;
 }
 
@@ -44,12 +45,6 @@
 .calendar-head view {
   text-align: center;
   flex: 1;
-}
-
-.calendar-body {
-  /*background: #eee;*/
-  padding-top: 30rpx;
-  height: 500rpx;
 }
 
 .calendar-body-rows {
@@ -98,30 +93,7 @@
 }
 
 .calendar-detail {
-  background: #eee;
-  height: 100rpx;
-}
-
-.calendar-detail-day {
-  display: inline;
-  position: absolute;
-  margin-left: 80rpx;
-  font-size: 20rpx;
-  /*font-weight: bold;*/
-  color: red;
-}
-
-.calendar-detail-info1 {
-  margin-left: 210rpx;
-  padding-top: 10rpx;
-  padding-bottom: 10rpx;
-  font-size: 20rpx;
-  font-weight: bold;
-}
-
-.calendar-detail-info2 {
-  margin-left: 210rpx;
-  padding-top: 10rpx;
-  padding-bottom: 10rpx;
-  font-size: 20rpx;
+  background: #000;
+  width: 300rpx;
+  height: 1000rpx;
 }

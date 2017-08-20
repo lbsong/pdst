@@ -27,6 +27,12 @@ var pageData = {
     //arr数据是与索引对应的数据信息
     arrIsShow: [],          //是否显示此日期
     arrDays: [],            //关于几号的信息
+    schedules: [],
+    todaySchedule:[],
+    
+    selectedDate: null,
+
+    mygroups: []
 }
 
 //刷新全部数据
@@ -52,11 +58,82 @@ var curDay = curDate.getDay();
 var curDayOfMonth = curDate.getDate();
 refreshPageData(curYear, curMonth, curDayOfMonth);
 
+var fetchSchedule = function() {
+    wx.request({
+        url: 'https://raw.githubusercontent.com/lbsong/pdst/master/data/calendar.json',
+        data: {},
+        method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+        // header: {}, // 设置请求的 header
+        success: function(res){
+            // success
+            pageData.schedules = res.data;
+            wx.setStorage({key:"schedules", data: res.data});
+        },
+        fail: function() {
+            // fail
+        },
+        complete: function() {
+            // complete
+        }
+    })
+};
+
+var findSchedules = function(schedules, mygroups) {
+    return schedules.filter(schedule => mygroups.indexOf(schedule.name));
+};
+
 Page({
     data: pageData,
 
     onLoad: function(options){
-        
+      var that = this;
+
+      wx.getStorage({
+          key: 'mygroups',
+          success: function(res){
+              // success
+
+              if (res.data != '') {
+                  pageData.mygroups = res.data.filter(g => g.my == true);
+                  that.setData(pageData);
+              }
+          },
+          fail: function() {
+              // fail
+          },
+          complete: function() {
+              // complete
+          }
+      })
+
+      wx.getStorage({
+          key: 'schedules',
+          success: function(res){
+              // success
+              if (res.data == '') {
+                  fetchSchedule();
+                  return;
+              }
+
+              let schedules = res.data;
+              pageData.schedules = findSchedules(schedules, pageData.mygroups);
+              that.setData(pageData);
+          },
+          fail: function() {
+              // fail
+          },
+          complete: function() {
+              // complete
+          }
+      })
+    },
+
+    selectGroups: function(e) {
+        console.log("select groups");
+    },
+
+    findSchedule: function(){
+        this.setData(pageData);
     },
 
     goToday: function(e){
@@ -79,6 +156,7 @@ Page({
         {
             --curMonth;
         }
+
         refreshPageData(curYear, curMonth, 0);
         this.setData(pageData);
     },
@@ -93,19 +171,17 @@ Page({
         {
             ++curMonth;
         }
+        
         refreshPageData(curYear, curMonth, 0);
         this.setData(pageData);
     },
 
     selectDay: function(e){
-        setCurDetailIndex(e.currentTarget.dataset.dayIndex);
-        this.setData({
-            detailData: pageData.detailData,
-        })
-    },
-
-    add: function(e){
-
+        console.log(e.currentTarget.dataset.dayIndex);
+        // setCurDetailIndex(e.currentTarget.dataset.dayIndex);
+        // this.setData({
+        //     detailData: pageData.detailData,
+        // })
     },
 
     bindDateChange: function(e){

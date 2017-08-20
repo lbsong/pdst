@@ -1,0 +1,9 @@
+<view class="settings">
+    <label>Select your groups: </label>
+    <checkbox-group class="checkbox-group" bindchange="changed">
+        <label class="item" wx:for="{{groups}}">
+            <checkbox value="{{item.name}}" checked="{{item.my}}"/>
+            {{item.name}}
+        </label>
+    </checkbox-group>
+</view>     
