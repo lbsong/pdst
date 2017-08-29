@@ -27,11 +27,14 @@
   <view class="calender-detail">
     <view class="detail-item" wx:for="{{schedules}}">
       <text>{{item.group}}</text>
+      <text>{{item.group}}</text>
+      <text>{{item.group}}</text>
     </view>
   </view>
 
   <view class="calender-my" wx:if="{{mygroups.length > 0}}"></view>
   <view class="calender-my" wx:else>
-    <navigator url="/pages/settings/settings">Select Groups</navigator>
+    <!-- <navigator url="/pages/settings/settings">Select Groups</navigator> -->
+    <button type="primary" bindtap="selectGroups">Select Groups</button> 
   </view>
 </view>

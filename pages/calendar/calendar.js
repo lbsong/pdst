@@ -7,7 +7,7 @@ var DAY_OF_MONTH = [
 var TEAMS = ["Flyfish", "Precomp", "Dev", "Nov", "Age", "HS", "Adv"];
 
 //判断当前年是否闰年
-var isLeapYear = function(year){
+var isLeapYear = function (year) {
     if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
         return 1
     else
@@ -15,7 +15,7 @@ var isLeapYear = function(year){
 };
 
 //获取当月有多少天
-var getDayCount = function(year, month){
+var getDayCount = function (year, month) {
     return DAY_OF_MONTH[isLeapYear(year)][month];
 };
 
@@ -28,21 +28,20 @@ var pageData = {
     arrIsShow: [],          //是否显示此日期
     arrDays: [],            //关于几号的信息
     schedules: [],
-    todaySchedule:[],
-    
+    todaySchedule: [],
+
     selectedDate: null,
 
     mygroups: []
 }
 
 //刷新全部数据
-var refreshPageData = function(year, month, day){
-    pageData.month = year + '-' + (month + 1); 
+var refreshPageData = function (year, month, day) {
+    pageData.month = year + '-' + (month + 1);
 
     var offset = new Date(year, month, 1).getDay();
 
-    for (var i = 0; i < 42; ++i)
-    {
+    for (var i = 0; i < 42; ++i) {
         pageData.arrIsShow[i] = i < offset || i >= getDayCount(year, month) + offset ? false : true;
         pageData.arrDays[i] = i - offset + 1;
     }
@@ -58,85 +57,88 @@ var curDay = curDate.getDay();
 var curDayOfMonth = curDate.getDate();
 refreshPageData(curYear, curMonth, curDayOfMonth);
 
-var fetchSchedule = function() {
+var fetchSchedule = function () {
     wx.request({
         url: 'https://raw.githubusercontent.com/lbsong/pdst/master/data/calendar.json',
         data: {},
         method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
         // header: {}, // 设置请求的 header
-        success: function(res){
+        success: function (res) {
             // success
             pageData.schedules = res.data;
-            wx.setStorage({key:"schedules", data: res.data});
+            wx.setStorage({ key: "schedules", data: res.data });
         },
-        fail: function() {
+        fail: function () {
             // fail
         },
-        complete: function() {
+        complete: function () {
             // complete
         }
     })
 };
 
-var findSchedules = function(schedules, mygroups) {
-    return schedules.filter(schedule => mygroups.indexOf(schedule.name));
+var findSchedules = function (schedules, mygroups) {
+    return schedules.filter(schedule => mygroups.indexOf(schedule.group));
 };
 
 Page({
     data: pageData,
 
-    onLoad: function(options){
-      var that = this;
+    onShow: function (options) {
+        var that = this;
 
-      wx.getStorage({
-          key: 'mygroups',
-          success: function(res){
-              // success
+        wx.getStorage({
+            key: 'mygroups',
+            success: function (res) {
+                // success
 
-              if (res.data != '') {
-                  pageData.mygroups = res.data.filter(g => g.my == true);
-                  that.setData(pageData);
-              }
-          },
-          fail: function() {
-              // fail
-          },
-          complete: function() {
-              // complete
-          }
-      })
+                if (res.data != '') {
+                    pageData.mygroups = res.data.filter(g => g.my == true);
+                    that.setData(pageData);
+                }
+            },
+            fail: function () {
+                // fail
+            },
+            complete: function () {
+                // complete
+            }
+        })
 
-      wx.getStorage({
-          key: 'schedules',
-          success: function(res){
-              // success
-              if (res.data == '') {
-                  fetchSchedule();
-                  return;
-              }
+        wx.getStorage({
+            key: 'schedules',
+            success: function (res) {
+                // success
+                if (res.data == '') {
+                    fetchSchedule();
+                    return;
+                }
 
-              let schedules = res.data;
-              pageData.schedules = findSchedules(schedules, pageData.mygroups);
-              that.setData(pageData);
-          },
-          fail: function() {
-              // fail
-          },
-          complete: function() {
-              // complete
-          }
-      })
+                let schedules = res.data;
+                pageData.schedules = findSchedules(schedules, pageData.mygroups);
+                that.setData(pageData);
+            },
+            fail: function () {
+                // fail
+            },
+            complete: function () {
+                // complete
+            }
+        })
     },
 
-    selectGroups: function(e) {
-        console.log("select groups");
-    },
+    getTodaySchedule: function (group, date) {
+        let schedules = pageData.schedules;
+        
+        for (var sch in schedules) {
+            sch.schedule = sch.schedule.filter(s => s.date == date);
+        }
 
-    findSchedule: function(){
+        pageData.todaySchedule = sch
         this.setData(pageData);
     },
 
-    goToday: function(e){
+    goToday: function (e) {
         curDate = new Date();
         curMonth = curDate.getMonth();
         curYear = curDate.getFullYear();
@@ -146,14 +148,12 @@ Page({
         this.setData(pageData);
     },
 
-    goLastMonth: function(e){
-        if (0 == curMonth)
-        {
+    goLastMonth: function (e) {
+        if (0 == curMonth) {
             curMonth = 11;
             --curYear
         }
-        else
-        {
+        else {
             --curMonth;
         }
 
@@ -161,32 +161,51 @@ Page({
         this.setData(pageData);
     },
 
-    goNextMonth: function(e){
-        if (11 == curMonth)
-        {
+    goNextMonth: function (e) {
+        if (11 == curMonth) {
             curMonth = 0;
             ++curYear
         }
-        else
-        {
+        else {
             ++curMonth;
         }
-        
+
         refreshPageData(curYear, curMonth, 0);
         this.setData(pageData);
     },
 
-    selectDay: function(e){
-        console.log(e.currentTarget.dataset.dayIndex);
-        // setCurDetailIndex(e.currentTarget.dataset.dayIndex);
+    selectDay: function (e) {
+        let day = e.currentTarget.dataset.dayIndex;
+
+        console.log(day);
+        // setCurDetailIndex(e.dataset.dayIndex);
         // this.setData({
         //     detailData: pageData.detailData,
         // })
+
+        getTodaySchedule(day)
     },
 
-    bindDateChange: function(e){
+    bindDateChange: function (e) {
         var arr = e.detail.value.split("-");
-        refreshPageData(+arr[0], arr[1]-1, arr[2]-1);
+        refreshPageData(+arr[0], arr[1] - 1, arr[2] - 1);
         this.setData(pageData);
     },
+
+    selectGroups: function (e) {
+        console.log(e);
+
+        wx.navigateTo({
+            url: '/pages/settings/settings',
+            success: function(res){
+                // success
+            },
+            fail: function() {
+                // fail
+            },
+            complete: function() {
+                // complete
+            }
+        })
+    }
 });

@@ -1,11 +1,70 @@
-<!--index.wxml-->
-<view class="container">
-  <view  bindtap="bindViewTap" class="userinfo">
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-    <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+<view class="wrapper">
+  <view class="og-calendar">
+    <view class="header">
+      <view class="btn month-pre" bindtap="changeDateEvent" data-year="{{data.beforeYear}}" data-month="{{data.beforMonth}}">
+        <image src="../../images/prepage.png"></image>
+      </view>
+      <view class="date-info">
+        <text>{{data.showYear}}-{{data.showMonth > 9 ? data.showMonth : ('0' + data.showMonth)}}</text>
+      </view>
+      <view class="btn month-next" bindtap="changeDateEvent" data-year="{{data.afterYear}}" data-month="{{data.afterMonth}}">
+        <image src="../../images/nextpage.png"></image>
+      </view>
+    </view>
+    <view class="week row">
+      <view class="col">
+        <text>Mon</text>
+      </view>
+      <view class="col">
+        <text>Tue</text>
+      </view>
+      <view class="col">
+        <text>Wed</text>
+      </view>
+      <view class="col">
+        <text>Thu</text>
+      </view>
+      <view class="col">
+        <text>Fri</text>
+      </view>
+      <view class="col">
+        <text>Sat</text>
+      </view>
+      <view class="col">
+        <text>Sun</text>
+      </view>
+    </view>
+    <view class="body row">
+      <block wx:for="{{data.dates}}" wx:key="_id">
+        <view bindtap="dateClickEvent" data-year="{{item.year}}" data-month="{{item.month}}" data-date="{{item.date}}" class="col {{data.showMonth == item.month ? '' : 'old'}} {{data.currentDate == item.date && data.currentYear==item.year && data.currentMonth == item.month ? 'current' : ''}} {{item.active ? 'active' : ''}}">
+          <text>{{item.date}}</text>
+        </view>
+      </block>
+    </view>
   </view>
-  <view class="usermotto">
-    <button bindtap="goCalendar">calendar</button>
-    <text class="user-motto">{{motto}}</text>
+</view>
+
+<view class="groups">
+  <view class="myschedule" wx:if="{{data.mygroups.length > 0}}">
+    <view wx:for="{{data.mygroups}}">
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+  <view class="myschedule" wx:else>
+    <button type="primary" bindtap="selectGroupClickEvent">Select Groups</button>
+  </view>
+</view>
+
+<view class="mask" hidden="{{!isMaskShow}}"></view>
+
+<view class="modal" hidden="{{!isModalShow}}">
+  <view class="content">
+    {{modalMsg}}
+  </view>
+  <view class="footer">
+    <!--<view class="btn cancel" bindtap="closeAddModalEvent"><text>取消</text></view>-->
+    <view class="btn" bindtap="closeModalEvent">
+      <text>OK</text>
+    </view>
   </view>
 </view>
