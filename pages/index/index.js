@@ -6,7 +6,6 @@ Page({
   data: {
     showMonth: {},
     data: {},
-    pickerDateValue: '',
 
     isSelectMode: false,
     isMaskShow: false,
@@ -18,23 +17,10 @@ Page({
   },
 
   onLoad() {
-    let _this = this;
-    let sysInfo = wx.getSystemInfo({
-      success: function (res) {
-        console.log(res.model);
-        console.log('success');
-      }
-    });
-
     changeDate.call(this);
   },
 
   onReady() {
-    let _this = this;
-
-    const { data } = this.data;
-
-
   },
 
   changeDateEvent(e) {
@@ -49,8 +35,6 @@ Page({
     data['selected']['year'] = year;
     data['selected']['month'] = month;
     data['selected']['date'] = date;
-
-    this.setData({ data: data });
 
     changeDate.call(this, new Date(year, parseInt(month) - 1, date));
   },
@@ -68,48 +52,8 @@ Page({
         // complete
       }
     })
-  },
-
-  showUpdatePanelEvent() {
-    showUpdatePanel.call(this);
-  },
-
-  closeUpdatePanelEvent() {
-    closeUpdatePanel.call(this);
-  },
-
-  editClickEvent() {
-    this.setData({ isEditMode: true });
-  },
-
-  //提示模态窗口关闭事件
-  closeModalEvent() {
-    closeModal.call(this);
   }
 });
-
-/**
- * 显示模态窗口
- * @param {String} msg 显示消息
- */
-function showModal(msg) {
-  this.setData({
-    isModalShow: true,
-    isMaskShow: true,
-    modalMsg: msg
-  });
-}
-
-/**
- * 关闭模态窗口
- */
-function closeModal() {
-  this.setData({
-    isModalShow: false,
-    isMaskShow: false,
-    modalMsg: ''
-  });
-}
 
 /**
  * 变更日期数据
@@ -163,21 +107,21 @@ function changeDate(targetDate) {
   let selected = this.data.data['selected'] || { year: showYear, month: showMonth, date: showDate };
 
   data = {
-    currentDate: currentDateObj.getDate(), //当天日期第几天
-    currentYear: currentDateObj.getFullYear(), //当天年份
-    currentDay: currentDateObj.getDay(), //当天星期
-    currentMonth: currentDateObj.getMonth() + 1, //当天月份
+    currentDate: currentDateObj.getDate(),        //当天日期第几天
+    currentYear: currentDateObj.getFullYear(),    //当天年份
+    currentDay: currentDateObj.getDay(),          //当天星期
+    currentMonth: currentDateObj.getMonth() + 1,  //当天月份
 
-    showMonth: showMonth, //当前显示月份
-    showDate: showDate, //当前显示月份的第几天 
-    showYear: showYear, //当前显示月份的年份
+    showMonth: showMonth,                         //当前显示月份
+    showDate: showDate,                           //当前显示月份的第几天 
+    showYear: showYear,                           //当前显示月份的年份
 
-    beforeYear: beforeYear, //当前页上一页的年份
-    beforMonth: beforMonth, //当前页上一页的月份
+    beforeYear: beforeYear,                       //当前页上一页的年份
+    beforMonth: beforMonth,                       //当前页上一页的月份
 
-    afterYear: afterYear, //当前页下一页的年份
-    afterMonth: afterMonth, //当前页下一页的月份
-    
+    afterYear: afterYear,                         //当前页下一页的年份
+    afterMonth: afterMonth,                       //当前页下一页的月份
+
     selected: selected,
     schedule: []
   };
@@ -221,80 +165,46 @@ function changeDate(targetDate) {
       _id++;
     }
   }
-  let schedule = getTodaySchedule(selected);
 
   data.dates = dates;
-  data.schedule = schedule;
-
-  this.setData({ data: data, pickerDateValue: showYear + '-' + showMonth });
+  this.setData({ data: data });
 }
 
 function getMySchedule() {
-  let mygroups = wx.getStorageSync('mygroups').filter(g => g.my === true);
+  let mygroups = [];
 
+  let groups = wx.getStorageSync('groups');
 
-  let schedules = [];
-
-  if (mygroups.length == 0) {
-    // no selected groups, so as a result, no 'my' group as well 
+  if (groups) {
     return;
   }
 
-  // get the schedule of this month
-  wx.getStorage({
-    key: 'schedules',
-    success: function (res) {
-      // success
-      if (res.data == '') {
-        schedules = fetchSchedule();
-      }
-    },
-    fail: function () {
-      // fail
-    },
-    complete: function () {
-      // complete
-    }
-  });
+  mygroups = groups.filter(g => g.my === true);
 
-  //filter the schedule by mygroups
+  let schedule = wx.getStorageSync('schedule');
 
-  let mySchedules = [];
+  if (schedule) {
+    schedule = getSchedule();
+  }
 
-  for (let sch of schedules) {
-    for (let g in mygroups) {
-      if (g.my === true && sch.group == g.name) {
-        mySchedules.push(sch);
+  let myschedule = [];
+
+  for(let s in schedule) {
+    for(let g in mygroups) {
+      if (g.name == s.group) {
+        myschedule.push(s);
       }
     }
   }
 
-  wx.setStorageSync({
-    key: 'myschedules',
-    data: mySchedules,
-    success: function (res) {
-      // success
-    },
-    fail: function () {
-      // fail
-    },
-    complete: function () {
-      // complete
-    }
-  });
-
-  return mySchedules;
-}
+  return myschedule;
+};
 
 function getTodaySchedule(date) {
+  let myschedule = getMySchedule();
+
   let todaySchedule = [];
-
-  let myschedules = wx.getStorageSync('myschedules');
-
-  if (myschedules.length == 0) {
-    myschedules = getMySchedule();
-  }
-
+  
   for (let sch in myschedules) {
     for (let schDate in sch.schedule) {
       if (schDate.date === date) {
@@ -306,21 +216,26 @@ function getTodaySchedule(date) {
   return todaySchedule;
 }
 
-function fetchSchedule() {
-  let schedule = [];
+function getSchedule() {
+  let schedule = wx.getStorageSync('schedule');
 
-  wx.request({
+  if (schedule) {
+    return schedule;
+  }
+
+  let requestTask = wx.request({
     url: 'https://raw.githubusercontent.com/lbsong/pdst/master/data/calendar.json',
     data: {},
     method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
     // header: {}, // 设置请求的 header
     success: function (res) {
       // success
-      wx.setStorage({ key: "schedules", data: res.data });
+      wx.setStorageSync({ key: "schedule", data: res.data });
       schedule = res.data;
     },
     fail: function () {
       // fail
+      console.log("Failed to get schedule.")
     },
     complete: function () {
       // complete

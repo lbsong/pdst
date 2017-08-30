@@ -18,38 +18,26 @@ Page({
     onLoad: function (e) {
         let that = this;
 
-        wx.getStorage({
-            key: 'mygroups',
-            success: function(res){
-                if (res.data != "") {
-                    that.setData({groups: res.data});
-                }
-            },
-            fail: function() {
-            },
-            complete: function() {
-            }
-        })
+        let groups = wx.getStorageSync('groups');
+
+        if (groups) {
+           this.setData({groups: groups}); 
+        }
+        else {
+            this.setData({groups: pre_groups});
+        }
     },
 
     changed: function (e) {
-        let mygroups = e.detail.value;
+        let selectedGroups = e.detail.value;
+        let groups = this.data.groups;
 
-        for (var g of pre_groups) {
-            if (mygroups.indexOf(g.name) != -1) {
+        for (var g of groups) {
+            if (selectedGroups.indexOf(g.name) != -1) {
                 g.my = true;
             }
         }
 
-        wx.setStorage({
-            key: 'mygroups',
-            data: pre_groups,
-            success: function (res) {
-            },
-            fail: function () {
-            },
-            complete: function () {
-            }
-        })
+        wx.setStorageSync('groups', groups);
     }
 });
